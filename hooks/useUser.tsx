@@ -41,7 +41,6 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
   }, []);
 
   const login = async (email: string, password: string) => {
-    //Simulando login correcto
     const authenticatedUser: User = { id: '1', email, name: 'John', surname: 'Doe'};
     setUser(authenticatedUser);
     localStorage.setItem('user', JSON.stringify(authenticatedUser));
@@ -49,9 +48,11 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
   };
 
   const logout = () => {
+    console.log('logout');
     setUser(null);
     localStorage.removeItem('user');
-    router.push('/login'); 
+    router.replace('/login'); 
+    
   };
 
   return (

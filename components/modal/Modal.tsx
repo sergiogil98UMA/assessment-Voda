@@ -1,4 +1,3 @@
-// components/Modal.tsx
 import React from 'react';
 
 interface ModalProps {
@@ -6,6 +5,7 @@ interface ModalProps {
   onClose: () => void;
   title: string;
   children: React.ReactNode;
+  
 }
 
 const Modal: React.FC<ModalProps> = ({ isOpen, onClose, title, children }) => {

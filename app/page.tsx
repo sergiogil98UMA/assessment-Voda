@@ -2,38 +2,61 @@
 import React from "react";
 import { useEffect } from "react";
 import { useUser } from "@/hooks/useUser";
-import { useRouter } from "next/navigation";
 import Header from "@/components/header";
-import UserList from "@/components/user-list/UserList";
+import UserList, { Usertype } from "@/components/user-list/UserList";
 import DB from "@/DB_Users.json";
 import Modal from "@/components/modal/Modal";
 import { useState } from "react";
+import AddUser from "@/components/addUser/addUser";
+import { get } from "http";
 
 export default function Home() {
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const { user } = useUser();
 
-  const handleOpenModal = () => {
-    setIsModalOpen(true); // Open the modal
+  const [users, setUsers] = useState <Usertype[]>([]);
+
+  const getDomainFromEmail = (email: string) => {
+    const regex = /@(.+)\./;
+    const match = email.match(regex);
+    if (match) {
+      return match[1];
+    }
+    return "";
   };
+  
+
+  useEffect(() => {
+    let userByCompany:Usertype[] = DB.users.filter(userIt => userIt.company == getDomainFromEmail(user?.email??""));
+    console.log(getDomainFromEmail(user?.email??""));
+    setUsers(userByCompany);
+  }, []);
 
   const handleCloseModal = () => {
-    setIsModalOpen(false); // Close the modal
+    setIsModalOpen(false); 
   };
-
-  // Rest of the code...
+  const [usersFilterd, setUsersFiltered] = useState(users);
+  useEffect(() => {
+    let newUsers = users.filter(userIt => userIt.id != "")
+    setUsersFiltered(newUsers);
+    console.log(newUsers);
+   },[users]);
 
   return (
     <main>
       <Header />
-      <button onClick={handleOpenModal} style={{ backgroundColor: "Red", color: "white", 
-      border: "2px solid black", fontSize: "inherit", padding: "8px", borderRadius: "5px",
-      }}>Allocate phone</button> {}
-      <UserList users={DB.users} />
+      <UserList users={usersFilterd} onCilckButton={
+        () => {
+          setIsModalOpen(!isModalOpen);
+      }}/>
 
       {isModalOpen && (
-        <Modal onClose={handleCloseModal} isOpen={isModalOpen} title="Allocate ">
-         <p>hello this is modal</p>
-        </Modal>
+        <Modal onClose={handleCloseModal} isOpen={isModalOpen} title="Allocate">
+        <AddUser onAddUser={(user)=>{
+          setUsers([...users, user]);
+          handleCloseModal();
+        }}/>
+         </Modal>
       )}
     </main>
   );

@@ -1,3 +1,16 @@
+Notes from Sergio:
+The login Identifies the domain from the company and shows the different company users. The examples are:
+    user@vodafone.com
+    user@orange.com
+    user@telefonica.com
+For the password, any is valued but it's necessary to fill the input.
+
+As for the functions, the New user button allows you to display a new user but the Edit User button lacks of functionality.
+
+This work has been done in two evenings and due to the complications with the backend, the database is storaged in a Json file as DB_User.json.
+
+
+
 This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
 ## Getting Started

@@ -1,8 +1,8 @@
 
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
-interface Usertype {
-  id: number;
+export interface Usertype {
+  id: string;
   name: string;
   surname: string;
   phone: string;
@@ -11,31 +11,27 @@ interface Usertype {
 
 interface UserListProps {
   users: Usertype[];
+  onCilckButton: () => void;
 }
 
-//users.filter(user => user.id != "")
-const UserList: React.FC<UserListProps> = ({users}) => {
-  const [isModalOpen, setIsModalOpen] = useState(false);
 
-  const handleOpenModal = () => {
-    setIsModalOpen(true); // Open the modal
-  };
 
-  const handleCloseModal = () => {
-    setIsModalOpen(false); // Close the modal
-  };
+const UserList: React.FC<UserListProps> = ({ users, onCilckButton }) => {
+
 
   return (
     <div className="container mx-auto p-4">
-      <h1 className="text-2xl font-bold mb-4">User List</h1>
-      <button onClick={handleOpenModal} style={{ backgroundColor: "Red", color: "white", 
-      border: "2px solid black", fontSize: "inherit", padding: "8px", borderRadius: "5px",
-      }}>Allocate phone</button>
+      <div style={{ display: "flex", justifyContent: "space-between"}}>
+        <h1 className="text-2xl font-bold mb-4">User List</h1>
+        <button onClick={onCilckButton} 
+        style={{marginBottom: "10px"}}
+        className="px-4 py-2 text-sm font-medium text-white bg-red-600 border border-transparent rounded-md hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500">Create User</button>
+      </div>
       <div className="overflow-x-auto">
         <table className="min-w-full bg-white">
           <thead>
             <tr>
-            <th className="px-4 py-2 border-b-2 border-gray-200">ID</th>
+              <th className="px-4 py-2 border-b-2 border-gray-200">ID</th>
               <th className="px-4 py-2 border-b-2 border-gray-200">Name</th>
               <th className="px-4 py-2 border-b-2 border-gray-200">Surname</th>
               <th className="px-4 py-2 border-b-2 border-gray-200">Phone assigned</th>
@@ -44,6 +40,8 @@ const UserList: React.FC<UserListProps> = ({users}) => {
           </thead>
           <tbody>
             {!users.length && <tr><td colSpan={4} className="text-center">No users found</td></tr>}
+
+
             {users.map((user) => (
               <tr key={user.id} className="text-gray-700">
                 <td className="px-4 py-2 border-b border-gray-200 text-center">{user.id}</td>
@@ -51,10 +49,7 @@ const UserList: React.FC<UserListProps> = ({users}) => {
                 <td className="px-4 py-2 border-b border-gray-200 text-center">{user.surname}</td>
                 <td className="px-4 py-2 border-b border-gray-200 text-center">{user.phone}</td>
                 <td className="px-4 py-2 border-b border-gray-200 text-center">
-                  <button className={
-                    `px-4 py-2 ${user.phone ? 'bg-indigo-500' : 'bg-green-500'}
-                       text-white rounded`}>{user.phone ? "Change phone" : "Allocate phone"}
-                  </button>
+                  <button onClick={onCilckButton} className="px-4 py-2 text-sm font-medium text-white bg-red-600 border border-transparent rounded-md hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500">Edit User</button>
                 </td>
               </tr>
             ))}
@@ -65,4 +60,4 @@ const UserList: React.FC<UserListProps> = ({users}) => {
   );
 };
 
-export default UserList ;
+export default UserList;
